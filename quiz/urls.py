@@ -17,9 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from quiz.views import push_message
+from quiz.views import push_message, callback
 
 urlpatterns = [
+    path('', callback),
     path('push_message/', push_message),
-
 ]

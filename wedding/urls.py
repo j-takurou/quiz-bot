@@ -19,7 +19,7 @@ from django.urls import path
 from quiz.views import health_check
 
 urlpatterns = [
-    path("", health_check),
+    # path("", health_check),
     path('admin/', admin.site.urls),
-    path('quiz/', include('quiz.urls'))
+    path('', include('quiz.urls'))
 ]

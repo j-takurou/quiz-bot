@@ -35,19 +35,24 @@ def health_check(request):
 
 @csrf_exempt
 def callback(request):
-    # get X-Line-Signature header value
-    signature = request.headers['X-Line-Signature']
 
-    # get request body as text
-    body = request.get_data(as_text=True)
+    if request.method == 'POST':
+        
+        # get X-Line-Signature header value
+        import json
+        signature = request.headers['X-Line-Signature']
+        # body = json.loads(request.body.decode('utf-8'))
 
-    # handle webhook body
-    try:
-        handler.handle(body, signature)
-    except InvalidSignatureError:
-        print("Invalid signature. Please check your channel access token/channel secret.")
+        # get request body as text
+        body = request.body.decode("utf-8")
 
-    return 'OK'
+        # handle webhook body
+        try:
+            handler.handle(body, signature)
+        except InvalidSignatureError:
+            print("Invalid signature. Please check your channel access token/channel secret.")
+
+    return HttpResponse("Done")
 
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -84,16 +89,18 @@ def check_answer(q_number, answer):
     return 0
 
 # register uuids and names
-@handler.add(FollowEvent, message=TextMessage)
+@handler.add(FollowEvent)
 def add_follower(event):
     """ follow eventが発生したタイミングで起動する """
+
+    pdb.set_trace()
     # クイズをPUSH送信するためにuuidsを保存
-    participant_userId = event.source.userId
+    participant_userId = event.source.user_id
     # extract user name from user profile
 
     try:
         profile = line_bot_api.get_profile(participant_userId)
-        name = profile.displayName
+        name = profile.display_name
     except LineBotApiError as e:
         # エラーハンドリング
         pass
@@ -103,7 +110,7 @@ def add_follower(event):
     # フォロー有難う！とメッセージを返す
     line_bot_api.push_message(
         to=participant_userId,
-        messages=f"フォロー有難うございます！{name}"
+        messages=TextSendMessage(text=f"フォロー有難うございます！{name}")
         )
 
 
