@@ -12,7 +12,6 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-
 class Quiz(models.Model):
     q_order = models.IntegerField()
     quiz_body = models.CharField(max_length=300)
