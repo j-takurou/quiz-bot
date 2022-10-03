@@ -57,9 +57,36 @@ def callback(request):
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text))
+
+    user = User(user_id=event.source.user_id)
+    def extract_answer(message):
+        import re
+        res = re.findall(string=message, pattern=r"^Q-(\d{1,2}): (\d{1})")
+        if (res) != 1:
+            # 雑談が挟まれたら、写真などを返す？
+            return None, None
+        else: 
+            q_number, ans = list(map(int, res[0]))
+            return q_number, ans
+    q_number, ans = extract_answer(event.message.text)
+    if q_number is None:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="ちょっと何言ってるか良くわからない。"))
+    else:
+        # 問題に対する回答ぽい場合は、答え合わせ処理にすすむ
+        t_or_f = check_answer(q_number, ans)
+        user.score += t_or_f
+        user.save()
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="回答有難うございます！"))
+
+
+def check_answer(q_number, answer):
+    """ Questionに対する回答の答え合わせ """
+    return 0
 
 # register uuids and names
 @handler.add(FollowEvent)
