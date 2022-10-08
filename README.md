@@ -12,7 +12,9 @@ export TEST_USER_LINE_ID=XXXX(自分のLINE USER ID)を使う
 ```
 2. `python ./manage.py runserver`でlocalhost:8000のurlで起動される
 3. ngrokを起動して`ngrok http 8000`を実行し、8000ポートに穴を開ける
-4. `python manage.py push_question \d{1}`で登録済みユーザにPUSH通知する（ngrok）
+4. `python manage.py push_question \d{1}`で登録済みユーザにPUSH通知する
+5. 4.で送信したクイズに回答し、正解していると、自分のレコード(User model参照)のscoreフィールドが1点追加されていることが確認できる
+    - `http://localhost:8000/admin`でレコードの確認をする
 
 
 
