@@ -8,9 +8,10 @@ class User(models.Model):
     user_id = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
     score = models.IntegerField(default=0)
-    
+
     def __str__(self):
         return self.name
+
 
 class Quiz(models.Model):
     q_order = models.IntegerField()
@@ -19,9 +20,11 @@ class Quiz(models.Model):
     def __str__(self):
         return self.quiz_body
 
+
 class Choice(models.Model):
     text = models.CharField(max_length=50)
     is_correct = models.BooleanField(default=False)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+
     def __str__(self):
         return self.text

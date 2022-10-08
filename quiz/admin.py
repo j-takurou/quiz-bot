@@ -4,8 +4,9 @@ from quiz.models import User, Quiz, Choice
 
 
 class ChoiceAdmin(admin.ModelAdmin):
-    list_display = ['text', 'quiz']
+    list_display = ["text", "quiz"]
     # fields = ['pub_date', 'question_text']
+
 
 # admin.site.register(Question, QuestionAdmin)
 admin.site.register(User)

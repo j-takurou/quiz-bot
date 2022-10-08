@@ -20,6 +20,6 @@ from django.urls import path
 from quiz.views import push_message, callback
 
 urlpatterns = [
-    path('', callback),
-    path('push_message/', push_message),
+    path("", callback),
+    path("push_message/", push_message),
 ]

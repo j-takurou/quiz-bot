@@ -20,6 +20,6 @@ from quiz.views import health_check
 
 urlpatterns = [
     # path("", health_check),
-    path('admin/', admin.site.urls),
-    path('', include('quiz.urls'))
+    path("admin/", admin.site.urls),
+    path("", include("quiz.urls")),
 ]
